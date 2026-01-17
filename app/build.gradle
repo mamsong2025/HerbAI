@@ -9,17 +9,20 @@ android {
     namespace 'com.example.herbai'
     compileSdk 34
 
-    // Only create release signing config if all required env vars are set
+    // Check if signing credentials are available
+    def keystorePath = System.getenv("KEYSTORE_PATH")
+    def keystorePassword = System.getenv("KEY_STORE_PASSWORD")
+    def keyAliasValue = System.getenv("ALIAS")
+    def keyPasswordValue = System.getenv("KEY_PASSWORD")
+    def hasSigningCredentials = keystorePath != null && keystorePassword != null && keyAliasValue != null && keyPasswordValue != null
+
     signingConfigs {
-        if (System.getenv("KEYSTORE_PATH") != null &&
-            System.getenv("KEY_STORE_PASSWORD") != null &&
-            System.getenv("ALIAS") != null &&
-            System.getenv("KEY_PASSWORD") != null) {
+        if (hasSigningCredentials) {
             release {
-                storeFile file(System.getenv("KEYSTORE_PATH"))
-                storePassword System.getenv("KEY_STORE_PASSWORD")
-                keyAlias System.getenv("ALIAS")
-                keyPassword System.getenv("KEY_PASSWORD")
+                storeFile file(keystorePath)
+                storePassword keystorePassword
+                keyAlias keyAliasValue
+                keyPassword keyPasswordValue
             }
         }
     }
@@ -42,7 +45,7 @@ android {
             minifyEnabled true // Bật tối ưu hóa code cho bản release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             // Only use release signing if the config exists
-            if (signingConfigs.findByName('release') != null) {
+            if (hasSigningCredentials) {
                 signingConfig signingConfigs.release
             }
         }
