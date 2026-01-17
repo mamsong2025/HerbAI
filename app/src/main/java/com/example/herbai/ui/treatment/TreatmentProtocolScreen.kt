@@ -14,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.herbai.engine.AcupointEngine
+import com.example.herbai.engine.LocalizationEngine
 import com.example.herbai.engine.MedicinePreparationGuide
 import com.example.herbai.ui.components.MedicalDisclaimerBanner
 
@@ -158,7 +159,7 @@ fun TreatmentProtocolScreen(
 @Composable
 fun AffiliateProductCard(product: com.example.herbai.model.AffiliateProduct, color: Color) {
     val isInternational = product.currency != "VND"
-    val platformName = if (product.affiliate_link.contains("shopee")) "Shopee" else "Amazon"
+    val platformName = if (product.affiliate_link?.contains("shopee") == true) "Shopee" else "Amazon"
     val platformColor = if (platformName == "Shopee") Color(0xFFFF5722) else Color(0xFFFF9900)
     
     Card(
@@ -177,7 +178,7 @@ fun AffiliateProductCard(product: com.example.herbai.model.AffiliateProduct, col
                         .padding(horizontal = 8.dp, vertical = 2.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(Icons.Default.Verified, contentDescription = null, size = 12.dp, tint = Color(0xFFD97706))
+                    Icon(Icons.Default.Verified, contentDescription = null, modifier = Modifier.size(12.dp), tint = Color(0xFFD97706))
                     Spacer(Modifier.width(4.dp))
                     Text(
                         if (isInternational) "EXPERT RECOMMENDED" else "CHUYÊN GIA KHUYÊN DÙNG",
@@ -203,7 +204,7 @@ fun AffiliateProductCard(product: com.example.herbai.model.AffiliateProduct, col
                     Text(product.name, fontWeight = FontWeight.Bold, fontSize = 14.sp)
                     
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Default.Star, contentDescription = null, size = 12.dp, tint = Color(0xFFFFB400))
+                        Icon(Icons.Default.Star, contentDescription = null, modifier = Modifier.size(12.dp), tint = Color(0xFFFFB400))
                         Text(" ${product.rating}", fontSize = 11.sp, fontWeight = FontWeight.Bold)
                         Text(
                             if (isInternational) " (${product.review_count} reviews)" else " (${product.review_count} đánh giá)",
@@ -290,7 +291,7 @@ fun AcupointItem(point: com.example.herbai.model.Acupoint, color: Color) {
                 contentAlignment = Alignment.Center
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(Icons.Default.Image, contentDescription = null, size = 48.dp, tint = Color.Gray)
+                    Icon(Icons.Default.Image, contentDescription = null, modifier = Modifier.size(48.dp), tint = Color.Gray)
                     Text("Ảnh hướng dẫn vị trí ${point.name_vietnamese}", fontSize = 11.sp, color = Color.Gray)
                 }
             }

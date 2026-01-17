@@ -49,7 +49,7 @@ class InAppUpdateManager(private val activity: Activity) {
     var onUpdateError: ((Exception) -> Unit)? = null
     
     // Listener cho trạng thái cài đặt
-    private val installStateUpdatedListener = InstallStateUpdatedListener { state ->
+    private val installStateUpdatedListener: InstallStateUpdatedListener = InstallStateUpdatedListener { state ->
         when (state.installStatus()) {
             InstallStatus.DOWNLOADED -> {
                 Log.d(TAG, "Update downloaded, ready to install")
@@ -57,11 +57,11 @@ class InAppUpdateManager(private val activity: Activity) {
             }
             InstallStatus.INSTALLED -> {
                 Log.d(TAG, "Update installed successfully")
-                appUpdateManager.unregisterListener(installStateUpdatedListener)
+                // Unregister will be handled in cleanup
             }
             InstallStatus.FAILED -> {
                 Log.e(TAG, "Update failed")
-                appUpdateManager.unregisterListener(installStateUpdatedListener)
+                // Unregister will be handled in cleanup
             }
             else -> {}
         }
