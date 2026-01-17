@@ -27,11 +27,15 @@ jobs:
       run: chmod +x gradlew
 
     - name: Decode Keystore
-      if: ${{ secrets.SIGNING_KEY != '' }}
       env:
         SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
       run: |
-        echo "$SIGNING_KEY" | base64 --decode > app/release.jks
+        if [ -n "$SIGNING_KEY" ]; then
+          echo "$SIGNING_KEY" | base64 --decode > app/release.jks
+          echo "Keystore decoded successfully"
+        else
+          echo "No signing key provided, skipping keystore decode"
+        fi
 
     - name: Build Debug APK (For Testing)
       run: ./gradlew assembleDebug
