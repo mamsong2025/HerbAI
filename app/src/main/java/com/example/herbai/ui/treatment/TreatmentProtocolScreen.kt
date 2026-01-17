@@ -155,6 +155,7 @@ fun TreatmentProtocolScreen(
         MedicalDisclaimerBanner(modifier = Modifier.padding(horizontal = 16.dp))
         
         Spacer(Modifier.height(32.dp))
+        }
     }
 }
 
@@ -249,7 +250,6 @@ fun AffiliateProductCard(product: com.example.herbai.model.AffiliateProduct, col
                     }
                 }
             }
-        }
         }
     }
 }
