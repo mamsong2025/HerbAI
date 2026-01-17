@@ -31,12 +31,14 @@ fun TreatmentProtocolScreen(
     
     val emeraldGreen = Color(0xFF10B981)
     
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFFF3F4F6))
-            .verticalScroll(rememberScrollState())
+    com.example.herbai.ui.components.ResponsiveContent(
+        modifier = Modifier.background(Color(0xFFF3F4F6))
     ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+        ) {
         // Header
         Box(
             modifier = Modifier
@@ -247,6 +249,7 @@ fun AffiliateProductCard(product: com.example.herbai.model.AffiliateProduct, col
                     }
                 }
             }
+        }
         }
     }
 }
