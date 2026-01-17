@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.herbai">
+
+    <!-- Camera: Plant identification, Tongue/Facial diagnosis, PPG pulse analysis -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    
+    <!-- Internet: Load AI models, update plant database, affiliate links -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    
+    <!-- Health Connect (Optional) - Requires Health Data Declaration on Play Console -->
+    <uses-permission android:name="android.health.permission.READ_HEART_RATE" />
+    <uses-permission android:name="android.health.permission.READ_SLEEP" />
+    <uses-permission android:name="android.health.permission.READ_STEPS" />
+
+    <!-- Camera is optional to support devices without cameras -->
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="Tuệ Y"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.HerbAI"
+        tools:targetApi="31">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="Tuệ Y"
+            android:theme="@style/Theme.HerbAI">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>
