@@ -11,8 +11,6 @@ import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
-import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
-import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 
 /**
  * In-App Update Manager - Quản lý cập nhật ứng dụng từ trong app
@@ -79,6 +77,10 @@ class InAppUpdateManager(private val activity: Activity) {
             val isUpdateAvailable = info.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
             val isUpdateInProgress = info.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS
             
+            // Manual check for update type allowed (replacing deprecated KTX extensions)
+            val isFlexibleAllowed = info.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
+            val isImmediateAllowed = info.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+            
             if (isUpdateAvailable) {
                 Log.d(TAG, "Update available! Version code: ${info.availableVersionCode()}")
                 
@@ -87,15 +89,15 @@ class InAppUpdateManager(private val activity: Activity) {
                 
                 when {
                     // Nếu đã quá DAYS_FOR_FLEXIBLE_UPDATE ngày → Bắt buộc cập nhật
-                    daysSinceUpdate >= DAYS_FOR_FLEXIBLE_UPDATE && info.isImmediateUpdateAllowed -> {
+                    daysSinceUpdate >= DAYS_FOR_FLEXIBLE_UPDATE && isImmediateAllowed -> {
                         startImmediateUpdate(info)
                     }
                     // Nếu không, cho phép cập nhật linh hoạt
-                    info.isFlexibleUpdateAllowed -> {
+                    isFlexibleAllowed -> {
                         startFlexibleUpdate(info)
                     }
                     // Fallback to immediate nếu flexible không được hỗ trợ
-                    info.isImmediateUpdateAllowed -> {
+                    isImmediateAllowed -> {
                         startImmediateUpdate(info)
                     }
                 }
