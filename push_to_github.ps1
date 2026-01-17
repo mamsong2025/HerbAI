@@ -1,38 +1,34 @@
-# 🚀 Công cụ tự động Push Code lên GitHub cho HerbAI
+# 🚀 Công cụ tự động Đẩy Code lên GitHub (HerbAI)
 $gitPath = "C:\Users\p\AppData\Local\GitHubDesktop\app-3.5.4\resources\app\git\cmd\git.exe"
 
-Write-Host "--- 🛠️ Đang chuẩn bị Project... ---" -ForegroundColor Cyan
+Write-Host "--- 📦 Code đã được tôi chuẩn bị sẵn sàng trên máy bạn! ---" -ForegroundColor Green
 
-# 1. Khởi tạo Git nếu chưa có
-if (!(Test-Path ".git")) {
-    & $gitPath init
-    Write-Host "✅ Đã khởi tạo Git Repo." -ForegroundColor Green
-}
-
-# 2. Add và Commit
-Write-Host "--- 📦 Đang đóng gói code (Bỏ qua file rác)... ---" -ForegroundColor Cyan
-& $gitPath add .
-& $gitPath commit -m "🚀 Hoàn thiện tính năng Camera, Health Connect và Affiliate"
-
-# 3. Hỏi link Repo
-Write-Host "`n--- 🔗 Cấu hình GitHub ---" -ForegroundColor Magenta
+# Hỏi link Repo
+Write-Host "`n--- 🔗 KẾT NỐI VỚI GITHUB ---" -ForegroundColor Magenta
 $repoUrl = Read-Host "Dán Link Repository GitHub của bạn vào đây (VD: https://github.com/user/repo.git)"
 
 if ($repoUrl -match "http") {
-    # Xóa remote cũ nếu có và thêm mới
+    Write-Host "--- 🚀 Đang đẩy code lên... ---" -ForegroundColor Cyan
+    
+    # Cấu hình remote và đẩy
     & $gitPath remote remove origin 2>$null
     & $gitPath remote add origin $repoUrl
-    
-    Write-Host "--- 🚀 Đang đẩy code lên GitHub... ---" -ForegroundColor Cyan
     & $gitPath branch -M main
+    
+    Write-Host "🔔 Một cửa sổ đăng nhập GitHub có thể hiện ra, bạn hãy đăng nhập để hoàn tất nhé!" -ForegroundColor Yellow
     & $gitPath push -u origin main -f
     
-    Write-Host "`n✅ THÀNH CÔNG! Code đã được tải lên." -ForegroundColor Green
-    Write-Host "Bây giờ bạn hãy vào tab 'Actions' trên trình duyệt để thấy bản build đang chạy." -ForegroundColor Yellow
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "`n✅ THÀNH CÔNG! Code đã được tải lên GitHub." -ForegroundColor Green
+        Write-Host "Bạn có thể vào tab 'Actions' trên trình duyệt để lấy App." -ForegroundColor Yellow
+    }
+    else {
+        Write-Host "`n❌ Có lỗi xảy ra khi đẩy code. Vui lòng kiểm tra lại quyền truy cập hoặc link Repo." -ForegroundColor Red
+    }
 }
 else {
-    Write-Host "❌ Link không hợp lệ. Vui lòng chạy lại script và dán đúng link." -ForegroundColor Red
+    Write-Host "❌ Link không hợp lệ." -ForegroundColor Red
 }
 
-Write-Host "Dừng 5 giây trước khi đóng..."
-Start-Sleep -Seconds 5
+Write-Host "`nDừng 10 giây trước khi đóng..."
+Start-Sleep -Seconds 10
